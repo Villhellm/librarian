@@ -1,0 +1,13 @@
+# run `docker build -t librarian .` in the repository root prior to using this file
+version: '3'
+services:
+  librarian:
+    container_name: librarian
+    image: librarian:latest
+    command: >
+      node index.js
+    volumes:
+      - /source/librarian:/usr/src/bot
+    environment:
+      - TZ=America/Los_Angeles
+    restart: unless-stopped
