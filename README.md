@@ -1,10 +1,30 @@
 # The Librarian Discord Bot
-The Librarian is a Discord bot designed to help book club communities. With features like book information lookup, ebook email list, and a suggestion/selection function, this bot should make your book club admin experience much simpler.
+The Librarian is a Discord bot designed to help book club communities. With features like book information lookup, ebook email list, and a suggestion/selection function, this bot should make your book club admin experience much simpler. It is designed to be run in Docker, specifically with docker-compose.
 
 # `Initial Setup`
 
 ## Step 1
-Create a `configuration.yaml` file in the same directory as `index.js` with the following information:
+Clone this repository
+
+## Step 2
+Enter the repository and run `npm install`. This will install all the required dependencies.
+
+## Step 3
+Edit the `docker-compose.yml` file.
+
+Replace `<your-repository-location>` with the full path to your repository.
+
+Replace `<your-config-location>` with the directory in which you would like to store your configuration.
+
+Replace `<your-timezone>` with your timezone.
+
+## Step 4
+Run the command `docker build -t librarian .` and then `docker-compose up -d`
+
+This will create a blank `configuration.yaml` file in your defined config directory for you to fill in.
+
+Here is the required information:
+
 | Name | Description
 | ---- | -----------
 | token | The Discord bot token for your bot
@@ -21,32 +41,6 @@ Create a `configuration.yaml` file in the same directory as `index.js` with the 
 | restart_command | The shell command to restart the bot
 | prefixes | A list of character prefixes you would like the bot to respond to
 
-### `Blank Template`
-```yaml
-token:
-user_bot:
-channel_current_book:
-channel_upcoming_book:
-channel_past_book:
-channel_book_suggestions:
-channel_spam:
-server_id:
-role_admin_name:
-librarian_email:
-librarian_email_password:
-restart_command:
-prefixes:
-  - '.'
-  - '!'
-  - '~'
-```
+## Step 5
 
-## Step 2
-
-From within the repository directory run the command `npm install`. This will install all the required dependencies.
-
-## Step 3
-Enter the `src` directory and run the command `node index.js` to start the bot (ctrl+c will stop the bot)
-
-# Running in Docker
-Included in this repository are a Dockerfile and a docker-compose.yml file. From the root of the directory run the command `docker build -t librarian .` to create the image. Then use the command `docker-compose up -d` to run the bot in the background.
+After filling in the necessary information in `configuration.yaml` restart the docker container. You should be up and running.

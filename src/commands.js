@@ -1,16 +1,14 @@
 const fs = require('fs');
 const Mailer = require('./mailer.js');
-const commands_file = '.store/commands.json';
-const kindle_emails_file = '.store/emails.json';
-const current_download_file = '.store/current_download'
+const commands_file = '/.store/commands.json';
+const configuration_file = '/.store/configuration.yaml';
+const default_configuration_file = 'configuration.yaml.default';
+const kindle_emails_file = '/.store/emails.json';
+const current_download_file = '/.store/current_download'
 const { exec } = require('child_process');
 var commands = [];
 var emails = [];
 var start_time = new Date();
-
-if (!fs.existsSync('.store')) {
-    fs.mkdirSync('.store');
-}
 
 function plural(interval) {
     return interval > 1 ? 's' : '';
@@ -56,7 +54,25 @@ function timeSince(date) {
     return returnString;
 }
 
+function getCurrentDownload(){
+    try{
+        return fs.readFileSync(current_download_file).toString();
+    }
+    catch{
+        return null;
+    }
+}
+
 module.exports = {
+    Initialize: function () {
+        try {
+            fs.readFileSync(configuration_file);
+        } catch (err) {
+            fs.copyFileSync(default_configuration_file, configuration_file)
+            console.log("Creating default configuration.yaml file. Please fill it with the necessary information and restart the docker container.");
+        }
+    },
+
     ReadCommands: function () {
         try {
             commands = JSON.parse(fs.readFileSync(commands_file));
@@ -98,7 +114,8 @@ module.exports = {
     },
 
     SendEmailAll: function (attachment_url) {
-        attachment_url = attachment_url === 'current' ? fs.readFileSync(current_download_file).toString() : attachment_url;
+        var current = getCurrentDownload();
+        attachment_url = attachment_url === 'current'  && current ? current : attachment_url;
         if (attachment_url.includes('http') && attachment_url.includes('mobi')) {
             emails.forEach(user => {
                 Mailer.SendEmail(user.email, attachment_url);
@@ -110,7 +127,8 @@ module.exports = {
     },
 
     SendEmail: function (recipient, attachment_url) {
-        attachment_url = attachment_url === 'current' ? fs.readFileSync(current_download_file).toString() : attachment_url;
+        var current = getCurrentDownload();
+        attachment_url = attachment_url === 'current'  && current ? current : attachment_url;
         if (attachment_url.includes('http') && attachment_url.includes('mobi')) {
             Mailer.SendEmail(recipient, attachment_url);
         }

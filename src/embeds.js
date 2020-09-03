@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 const Constant = require('./const.js');
+const Downloader = require('./downloader.js');
 
 function commandObject(command_name, description, additional_args = null) {
     return { name: command_name, value: `${description}\nExample:\`!${command_name} ${additional_args ? additional_args : ''}\`` };
 }
 
 module.exports = {
-    BookEmbed: function (command, message, book_info, extra_fields = null) {
+    BookEmbed: async function (command, message, book_info, extra_fields = null, args = null) {
         var author = book_info.authors.join(', ');
         var title = book_info.title;
         var subtitle = book_info.subtitle;
@@ -14,7 +15,7 @@ module.exports = {
         var cover = book_info.imageLinks.thumbnail;
         var page_count = book_info.pageCount;
         var genre = book_info.categories ? book_info.categories.join(', ') : 'Not specified';
-
+        var download_link = await Downloader.check(`${args}`);
         var embed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle(title)
@@ -24,6 +25,7 @@ module.exports = {
             .addField('Description', description ? description.length > 500 ? description.substring(0, 499) + '...' : description : 'none')
             .addField('Genre', genre)
             .addField('Length', page_count + ' pages')
+            .addField('Download', download_link)
             .setImage(cover)
             .setTimestamp()
             .setFooter(`${message.author.username} invoked command \`${command}\``, message.author.avatarURL());

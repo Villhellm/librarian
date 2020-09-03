@@ -1,0 +1,16 @@
+token:
+user_bot:
+channel_current_book:
+channel_upcoming_book:
+channel_past_book:
+channel_book_suggestions:
+channel_spam:
+server_id:
+role_admin_name:
+librarian_email:
+librarian_email_password:
+restart_command:
+prefixes:
+  - '.'
+  - '!'
+  - '~'

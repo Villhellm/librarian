@@ -7,7 +7,8 @@ services:
     command: >
       node index.js
     volumes:
-      - /source/librarian:/usr/src/bot
+      - <your-repository-location>:/usr/src/bot
+      - <your-config-location>:/.store
     environment:
-      - TZ=America/Los_Angeles
+      - TZ=<your-timezone>
     restart: unless-stopped
