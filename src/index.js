@@ -9,7 +9,18 @@ const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
 bot.on('ready', () => onReady());
 bot.on('message', async message => onMessage(message));
 bot.on('messageReactionAdd', async (reaction, user) => onReactionAdd(reaction, user));
-bot.login(Constant.BotToken);
+if (Constant.BotToken && Constant.BotToken != '') {
+  try {
+    bot.login(Constant.BotToken);
+  }
+  catch{
+    console.log('Invalid bot token found. Please update your configuration.yaml');
+  }
+}
+else {
+  console.log('No bot token found. Please update your configuration.yaml');
+  Commands.Initialize();
+}
 
 function onReady() {
   Commands.ReadCommands();
@@ -51,7 +62,8 @@ async function onMessage(message) {
     case 'lookup':
       var book_result = await Book.BookInfo(args);
       if (book_result) {
-        message.channel.send(Embeds.BookEmbed(prefix + cmd + ' ' + args.join(' '), message, book_result));
+        var book_embed = await Embeds.BookEmbed(prefix + cmd + ' ' + args.join(' '), message, book_result, null, args.join(' '));
+        message.channel.send(book_embed);
       }
       else {
         message.channel.send(`There was an error retrieving results`).then(msg => { msg.delete({ timeout: Constant.TempMessageTimeout }) });
@@ -122,7 +134,8 @@ async function onMessage(message) {
         var book_result = await Book.BookInfo(args);
         if (book_result) {
           var user_fields = [{ name: 'Suggestor', value: '<@' + message.author.id + '>' }];
-          channel.send(Embeds.BookEmbed(prefix + cmd + ' ' + args.join(' '), message, book_result, user_fields));
+          var book_embed = Embeds.BookEmbed(prefix + cmd + ' ' + args.join(' '), message, book_result, user_fields, args.join(' '));
+          channel.send(book_embed);
         }
         else {
           message.channel.send(`There was an error retrieving results`).then(msg => { msg.delete({ timeout: Constant.TempMessageTimeout }) });
