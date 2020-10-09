@@ -10,13 +10,13 @@ Clone this repository
 Enter the repository and run `npm install`. This will install all the required dependencies.
 
 ## Step 3
-Edit the `docker-compose.yml` file.
+Make a copy from `.env.example` file and rename it `.env`.
 
-Replace `<your-repository-location>` with the full path to your repository.
+Add the full path of your repository on the `REPOSITORY_LOCATION` variable.
 
-Replace `<your-config-location>` with the directory in which you would like to store your configuration.
+Add the directory in which you would like to store your configuration on the `CONFIG_LOCATION` variable.
 
-Replace `<your-timezone>` with your timezone.
+Add your timezone on the `TIMEZONE` variable
 
 ## Step 4
 Run the command `docker build -t librarian .` and then `docker-compose up -d`
