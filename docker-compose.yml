@@ -7,8 +7,8 @@ services:
     command: >
       node index.js
     volumes:
-      - <your-repository-location>:/usr/src/bot
-      - <your-config-location>:/.store
+      - ${REPOSITORY_LOCATION}:/usr/src/bot
+      - ${CONFIG_LOCATION}:/.store
     environment:
-      - TZ=<your-timezone>
+      - TZ=${TIMEZONE}
     restart: unless-stopped
