@@ -53,6 +53,7 @@ module.exports = {
             commands_json.push(commandObject('editcom', 'Edit a simple command', 'command-name command-value'));
             commands_json.push(commandObject('delcom', 'Delete a simple command', 'command-name'));
             commands_json.push(commandObject('selectbook', 'Select the current book selection', 'month-name(optional)'));
+            commands_json.push(commandObject('clearsuggestions', 'Clear all suggestions that have been selected', 'command-name'));
             commands_json.push(commandObject('setdownload', 'Set the current download that will be sent to the email list recipients (this will not actually send any mail on its own)', 'download-link'));
             commands_json.push(commandObject('sendemail', 'Send an attachment to a specified email address', 'email-recipient download-link'));
             commands_json.push(commandObject('sendemailall', 'Send an attachment to entire email list', 'download-link'));
